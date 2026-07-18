@@ -186,7 +186,10 @@ def main() -> None:
     rows.sort(key=lambda row: str(row["relative_path"]))
     with tsv_path.open("w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(
-            handle, fieldnames=["relative_path", "role", "bytes", "sha256"], delimiter="\t"
+            handle,
+            fieldnames=["relative_path", "role", "bytes", "sha256"],
+            delimiter="\t",
+            lineterminator="\n",
         )
         writer.writeheader()
         writer.writerows(rows)

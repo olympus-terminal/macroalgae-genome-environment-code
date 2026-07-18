@@ -1314,8 +1314,8 @@ def run_full(run_id: str) -> List[Path]:
     gee_unresolved_list = "\n".join(f"- `{genome}`" for genome in cohorts["gee_unresolved_ids"])
     report = f"""# iScience revision data-integrity audit
 
-Run ID: `{run_id}`  
-Generated: `{created_at}`  
+Run ID: `{run_id}`
+Generated: `{created_at}`
 Program: `{rel(Path(__file__))}`
 
 ## Exact computation and acceptance gates

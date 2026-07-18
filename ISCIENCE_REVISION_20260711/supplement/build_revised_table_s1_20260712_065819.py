@@ -16,6 +16,7 @@ from __future__ import annotations
 import csv
 import hashlib
 import json
+import re
 import sys
 from collections import Counter
 from pathlib import Path
@@ -156,6 +157,27 @@ def main() -> None:
     legacy_sheet = "TABLE_S1E-pfam_counts_with_met"
     if legacy_sheet not in workbook.sheetnames:
         raise RuntimeError(f"Expected legacy sheet absent: {legacy_sheet}")
+    legacy_ws = workbook[legacy_sheet]
+    legacy_headers = [cell.value for cell in legacy_ws[1]]
+    legacy_genome_column = legacy_headers.index("Genome")
+    legacy_pfam_columns = [
+        index
+        for index, value in enumerate(legacy_headers)
+        if re.fullmatch(r"PF\d{5}", str(value))
+    ]
+    if not legacy_pfam_columns:
+        raise RuntimeError("Legacy S1E contains no strict Pfam accession columns")
+    raw_totals = {
+        row["Genome"]: int(float(row["raw_pfam_hit_total"])) for row in master_rows
+    }
+    legacy_false_zero_genomes = []
+    for values in legacy_ws.iter_rows(min_row=2, values_only=True):
+        genome = str(values[legacy_genome_column]).strip()
+        all_zero = all(
+            float(values[index] or 0) == 0 for index in legacy_pfam_columns
+        )
+        if all_zero and raw_totals.get(genome, 0) > 0:
+            legacy_false_zero_genomes.append(genome)
     workbook.remove(workbook[legacy_sheet])
 
     readme = workbook.create_sheet("README_AUDIT", 0)
@@ -163,7 +185,7 @@ def main() -> None:
         ("Table S1 revised audit", "Generated from retained project sources; no values were imputed or simulated."),
         ("Original workbook", str(SOURCE_WORKBOOK.relative_to(ROOT))),
         ("Original SHA-256", source_hash_before),
-        ("Why legacy S1E is omitted", "The original 131-row S1E contained 24 false all-zero Pfam vectors caused by parser/merge failures. The original workbook remains unchanged and archived; that sheet is not carried into this analysis-ready revision."),
+        ("Why legacy S1E is omitted", f"The original {len(master_rows)}-row S1E contained {len(legacy_false_zero_genomes)} false all-zero Pfam vectors caused by parser/merge failures. The original workbook remains unchanged and archived; that sheet is not carried into this analysis-ready revision."),
         ("Table S1E", "Authoritative 131-record master catalog from the reconciled analysis manifest. Exons is retained as a legacy field and is not relabeled as predicted protein count."),
         ("Table S1F", "Macroalgal genome analysis set comprising 126 records with matched Pfam profiles and 64-dimensional AEF embeddings. Quantitative coordinate uncertainty is reported as unavailable where not retained."),
         ("Table S1G", "Index of the regenerated raw Pfam matrix used for revision analyses and its SHA-256 hash. Raw counts remain primary observations; ratio and BUSCO specifications are sensitivities, not corrected counts."),
@@ -311,6 +333,7 @@ def main() -> None:
         "checks": {
             "original_workbook_unchanged": True,
             "known_faulty_legacy_s1e_omitted": True,
+            "legacy_false_zero_pfam_vectors": len(legacy_false_zero_genomes),
             "master_unique_genomes": len(master_rows),
             "analysis_set_unique_genomes": len(cohort_rows),
             "analysis_set_id_equals_embedding_id_set": True,

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Recompute the full-cohort Pfam--AEF screen from validated real inputs.
+r"""Recompute the full-cohort Pfam--AEF screen from validated real inputs.
 
 The inferential family is all variable, strict ``PF\d{5}`` count profiles
 against A00--A63 in the exact 126-genome cohort. Spearman correlations use

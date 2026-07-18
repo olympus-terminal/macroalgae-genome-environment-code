@@ -8,10 +8,10 @@
   },
   "failures": [],
   "files_in_inventory": 31,
-  "generated_at_utc": "2026-07-18T15:58:20.798809+00:00",
+  "generated_at_utc": "2026-07-18T16:01:36.488105+00:00",
   "inventory": {
-    "path": "provenance/public_release_inventory_20260718_225817.tsv",
-    "sha256": "6683e80aa45c312ee0b6b583bd0e1fa691493eaac4fc4507bdeb49cc857573b1"
+    "path": "provenance/public_release_inventory_20260718_230128.tsv",
+    "sha256": "dac53f98c4d9d2e82d8bbfee9e20fd8af064503f8d5d9313024608fd96fd392a"
   },
   "passed": true,
   "python_files_compiled_in_memory": 21,

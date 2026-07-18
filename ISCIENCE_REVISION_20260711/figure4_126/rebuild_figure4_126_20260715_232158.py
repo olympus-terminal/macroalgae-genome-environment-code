@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Recompute the legacy Figure 4 A--P analysis on the authenticated 126 genomes.
+r"""Recompute the legacy Figure 4 A--P analysis on the authenticated 126 genomes.
 
 Data provenance
 ---------------
