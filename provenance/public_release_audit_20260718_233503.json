@@ -1,0 +1,23 @@
+{
+  "checks": {
+    "credential_like_strings_absent": true,
+    "forbidden_superseded_scripts_absent": true,
+    "private_absolute_paths_absent": true,
+    "python_syntax_valid": true,
+    "required_files_present": true
+  },
+  "failures": [],
+  "files_in_inventory": 33,
+  "generated_at_utc": "2026-07-18T16:35:03.430495+00:00",
+  "inventory": {
+    "path": "provenance/public_release_inventory_20260718_233503.tsv",
+    "sha256": "805c5d7452e63bf17320536459652549fa8dd6e7f4a585341acb21c8f135a386"
+  },
+  "passed": true,
+  "python_files_compiled_in_memory": 21,
+  "root_directory_name": "macroalgae-genome-environment-code",
+  "script_version": "2026-07-18.1",
+  "warnings": [
+    "random API present for manual review (resampling permitted): ISCIENCE_REVISION_20260711/analysis_stats/run_robustness_20260711_085930.py"
+  ]
+}

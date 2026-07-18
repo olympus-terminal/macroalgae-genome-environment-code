@@ -1,6 +1,6 @@
 # Software and database citations
 
-The manuscript cites the analytical software and databases at first relevant use. Exact versions are stated only when preserved in local provenance; see `SOFTWARE_ENVIRONMENTS.md`.
+This file lists the analytical software, databases, and resources named in the manuscript. Recorded implementation dependencies and workflow-specific versions are documented separately in `SOFTWARE_ENVIRONMENTS.md`.
 
 - **CLC Genomics Workbench.** QIAGEN Digital Insights. *QIAGEN CLC Genomics Workbench*. https://digitalinsights.qiagen.com/products-overview/discovery-insights-portfolio/analysis-and-visualization/qiagen-clc-genomics-workbench/ (accessed July 18, 2026). The version used for the original assemblies was not retained.
 - **ABySS.** Simpson, J.T., Wong, K., Jackman, S.D., Schein, J.E., Jones, S.J.M., and Birol, I. (2009). ABySS: A parallel assembler for short read sequence data. *Genome Research* 19, 1117–1123. https://doi.org/10.1101/gr.089532.108.
@@ -16,9 +16,12 @@ The manuscript cites the analytical software and databases at first relevant use
 - **PyHMMER.** Larralde, M., and Zeller, G. (2023). PyHMMER: A Python library binding to HMMER for efficient sequence analysis. *Bioinformatics* 39, btad214. https://doi.org/10.1093/bioinformatics/btad214.
 - **InterPro.** Blum, M., Andreeva, A., Florentino, L.C., et al. (2025). InterPro: The protein sequence classification resource in 2025. *Nucleic Acids Research* 53, D444–D456. https://doi.org/10.1093/nar/gkae1082.
 - **SciPy.** Virtanen, P., Gommers, R., Oliphant, T.E., et al. (2020). SciPy 1.0: Fundamental algorithms for scientific computing in Python. *Nature Methods* 17, 261–272. https://doi.org/10.1038/s41592-019-0686-2.
-- **DAVID.** Sherman, B.T., Hao, M., Qiu, J., et al. (2022). DAVID: A web server for functional enrichment analysis and functional annotation of gene lists (2021 update). *Nucleic Acids Research* 50, W216–W221. https://doi.org/10.1093/nar/gkac194.
-- **dcGO.** Bao, C., Lu, C., Lin, J., Gough, J., and Fang, H. (2023). The dcGO Domain-Centric Ontology Database in 2023: New website and extended annotations for protein structural domains. *Journal of Molecular Biology* 435, 168093. https://doi.org/10.1016/j.jmb.2023.168093.
+- **Google Earth Engine.** Gorelick, N., Hancher, M., Dixon, M., Ilyushchenko, S., Thau, D., and Moore, R. (2017). Google Earth Engine: Planetary-scale geospatial analysis for everyone. *Remote Sensing of Environment* 202, 18–27. https://doi.org/10.1016/j.rse.2017.06.031.
+- **AlphaEarth Foundations.** Brown, C.F., Kazmierski, M.R., Pasquarella, V.J., et al. (2025). AlphaEarth Foundations: An embedding field model for accurate and efficient global mapping from sparse label data. arXiv:2507.22291. https://doi.org/10.48550/arXiv.2507.22291.
+- **AlphaEarth Foundations Satellite Embedding dataset.** Google Earth Engine Data Catalog. `GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL`. https://developers.google.com/earth-engine/datasets/catalog/GOOGLE_SATELLITE_EMBEDDING_V1_ANNUAL (accessed July 18, 2026). The dataset is produced by Google and Google DeepMind.
+- **NCBI resources.** Sayers, E.W., et al. (2026). Database resources of the National Center for Biotechnology Information in 2026. *Nucleic Acids Research* 54, D20–D27. https://doi.org/10.1093/nar/gkaf1060.
+- **OpenAI Codex.** OpenAI. (n.d.). Codex. https://openai.com/codex/ (accessed July 18, 2026).
 - **ETOPO1.** Amante, C., and Eakins, B.W. (2009). ETOPO1 1 arc-minute global relief model: Procedures, data sources and analysis. NOAA Technical Memorandum NESDIS NGDC-24. https://doi.org/10.7289/V5C8276M.
-- **RCSB PDB structure controls.** Entry 1SHU: https://doi.org/10.2210/pdb1SHU/pdb. Entry 1AO3: https://doi.org/10.2210/pdb1AO3/pdb.
+- **RCSB Protein Data Bank.** Burley, S.K., Berman, H.M., Bhikadiya, C., et al. (2019). RCSB Protein Data Bank: Biological macromolecular structures enabling research and education in fundamental biology, biomedicine, biotechnology and energy. *Nucleic Acids Research* 47, D464–D474. https://doi.org/10.1093/nar/gky1004. Structure controls: entry 1SHU, https://doi.org/10.2210/pdb1SHU/pdb; entry 1AO3, https://doi.org/10.2210/pdb1AO3/pdb.
 
-Existing manuscript references already cover UpSetR, Google Earth Engine, MODIS-Aqua products, AlphaEarth Foundations, the statistical combination and heterogeneity procedures, Moran's I, Benjamini–Hochberg adjustment, and World Ocean Atlas products.
+The manuscript separately cites the retained MODIS-Aqua and World Ocean Atlas products and the statistical methods used for multiplicity correction, evidence combination, and heterogeneity.

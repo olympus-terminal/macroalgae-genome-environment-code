@@ -2,7 +2,7 @@
 
 This repository contains the analysis and figure-support code for the manuscript *Earth-Observation and Hybrid Spatiotemporal Embeddings Reveal Genome–Environment Associations in Macroalgae*.
 
-All genome–environment analyses reported in the manuscript use the authenticated 126-genome cohort: 70 Rhodophyta, 43 Ochrophyta, and 13 Chlorophyta. The code does not substitute simulated, synthetic, or reconstructed summary values for experimental or observational data.
+All genome–environment analyses reported in the manuscript use the authenticated 126-genome cohort: 70 Rhodophyta, 43 Ochrophyta, and 13 Chlorophyta. The code does not substitute simulated, synthetic, or fabricated scientific results for experimental or observational data.
 
 ## Repository scope
 
@@ -15,17 +15,17 @@ The current revision workflows are organized as follows:
 - `ISCIENCE_REVISION_20260711/pf00092_midas/`: PF00092.35 reannotation and canonical MIDAS-position analysis using real peptide sequences.
 - `ISCIENCE_REVISION_20260711/figure3_126/`: the corrected 42,828-test recorded-metadata screen and Figure 3 generator for the exact 126-genome cohort.
 - `ISCIENCE_REVISION_20260711/figure4_126/`: the within-phylum Figure 4 analysis on the 126-genome cohort.
-- `ISCIENCE_REVISION_20260711/spatial/` and `ISCIENCE_REVISION_20260711/figures/`: spatial sensitivity and Figure 1 layout support.
+- `ISCIENCE_REVISION_20260711/spatial/` and `ISCIENCE_REVISION_20260711/figures/`: sampling-map rendering and Figure 1 layout support.
 - `ISCIENCE_REVISION_20260711/supplement/`: builders for corrected Tables S1–S3 and Figure S3 support.
-- `triangulation/scripts/`: retained rbcL/FastTree workflow.
+- `triangulation/scripts/`: retained FastTree tree-building step for the rbcL phylogeny.
 
 ## Reproducibility boundaries
 
 Large sequence files, raw HMMER output, derived matrices, and submission workbooks are not duplicated in this code repository. Their expected locations, public accessions, and service requirements are listed in [DATA_INPUTS.md](DATA_INPUTS.md).
 
-Several final figures include documented iTOL or Adobe Illustrator assembly. The exact computational and manual boundaries are listed in [MANUAL_STEPS.md](MANUAL_STEPS.md). Figures 3–5 have current generators tied to the authenticated 126-genome inputs.
+Several final figures include documented iTOL annotation or manual assembly. The exact computational and manual boundaries are listed in [MANUAL_STEPS.md](MANUAL_STEPS.md). Figures 3–5 have current generators tied to the authenticated 126-genome inputs.
 
-The repository includes no manuscript correspondence, author contact data, credentials, private Earth Engine assets, legacy salinity-proxy scripts, synthetic-data demonstrations, invalid signed-matrix spectral biclustering, or superseded machine-learning analyses.
+The repository includes no manuscript correspondence, author contact data, credentials, private Earth Engine assets, or superseded workflows.
 
 ## Environment
 
@@ -37,7 +37,7 @@ source .venv/bin/activate
 python -m pip install -r requirements.txt
 ```
 
-External commands used by selected workflows include FastTree 2.1.11, Poppler utilities, `qpdf`, and `tectonic`. Google Earth Engine scripts require an authorized Earth Engine account and project.
+Reproduction utilities used by selected workflows include FastTree 2.1.11, Poppler, `qpdf`, and `tectonic`. Google Earth Engine scripts require an authorized Earth Engine account and project. `SOFTWARE_CITATIONS.md` covers manuscript-named analytical tools and resources; `SOFTWARE_ENVIRONMENTS.md` records implementation dependencies and versions.
 
 ## Running analyses
 
