@@ -1,0 +1,16 @@
+# Convenience dependency list. See SOFTWARE_ENVIRONMENTS.md for versions
+# actually recorded by each manuscript workflow.
+biopython==1.85
+cartopy==0.23.0
+earthengine-api==1.6.12
+lxml==6.1.0
+matplotlib>=3.8.4,<4
+numpy>=1.22.0,<3
+openpyxl==3.1.5
+pandas>=1.5.3,<3
+PyMuPDF==1.27.2.3
+pyhmmer==0.11.0
+pyproj>=3.6,<4
+scipy>=1.11.4,<2
+shapely>=2.0,<3
+statsmodels==0.14.5

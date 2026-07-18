@@ -1,0 +1,51 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+
+# Credentials and local configuration
+.env
+.env.*
+*.pem
+*.key
+credentials*
+service-account*.json
+.config/earthengine/
+
+# Scientific inputs and outputs are obtained separately.
+*.csv
+*.csv.gz
+*.tsv
+*.xlsx
+*.xls
+*.fa
+*.fasta
+*.faa
+*.fna
+*.hmm
+*.tblout
+*.seqtblout
+*.nwk
+*.npy
+*.npz
+*.pkl
+*.pickle
+*.parquet
+*.feather
+*.pdf
+*.png
+*.svg
+*.tif
+*.tiff
+*.zip
+*.tar
+*.tar.gz
+
+# Permit repository provenance and citation tables.
+!provenance/*.tsv
+!provenance/*.json
+
+# Office and OS temporaries
+~$*
+.DS_Store

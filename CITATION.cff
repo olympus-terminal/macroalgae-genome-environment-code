@@ -1,0 +1,37 @@
+cff-version: 1.2.0
+message: "Please cite this software repository and the associated manuscript."
+title: "Macroalgae genome–environment analysis code"
+type: software
+version: 1.0.0
+date-released: 2026-07-18
+license: MIT
+repository-code: "https://github.com/olympus-terminal/macroalgae-genome-environment-code"
+authors:
+  - family-names: Nelson
+    given-names: David R.
+  - family-names: Mystikou
+    given-names: Alexandra
+  - family-names: El Assal
+    given-names: Diana C.
+  - family-names: Jaiswal
+    given-names: Ashish K.
+  - family-names: Sultana
+    given-names: Mehar
+  - family-names: Rad-Menendez
+    given-names: Cecilia
+  - family-names: Al-Mansoori
+    given-names: Noura
+  - family-names: Elias
+    given-names: Sewar T.
+  - family-names: Abdul-Hamid
+    given-names: Ma-sum
+  - family-names: Nayfeh
+    given-names: Layanne
+  - family-names: Drou
+    given-names: Nizar
+  - family-names: Burt
+    given-names: John A.
+  - family-names: Green
+    given-names: David H.
+  - family-names: Salehi-Ashtiani
+    given-names: Kourosh
