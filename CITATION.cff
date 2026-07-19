@@ -2,8 +2,8 @@ cff-version: 1.2.0
 message: "Please cite this software repository and the associated manuscript."
 title: "Macroalgae genome–environment analysis code"
 type: software
-version: 1.0.1
-date-released: 2026-07-18
+version: 1.0.2
+date-released: 2026-07-19
 license: MIT
 repository-code: "https://github.com/olympus-terminal/macroalgae-genome-environment-code"
 authors:

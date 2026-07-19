@@ -11,6 +11,7 @@ pandas>=1.5.3,<3
 PyMuPDF==1.27.2.3
 pyhmmer==0.11.0
 pyproj>=3.6,<4
+python-docx==1.2.0
 scipy>=1.11.4,<2
 shapely>=2.0,<3
 statsmodels==0.14.5

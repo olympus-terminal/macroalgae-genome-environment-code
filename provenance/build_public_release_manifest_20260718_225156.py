@@ -13,7 +13,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 
-SCRIPT_VERSION = "2026-07-18.1"
+SCRIPT_VERSION = "2026-07-19.2"
 TEXT_SUFFIXES = {
     ".py",
     ".md",
@@ -39,12 +39,29 @@ REQUIRED_PATHS = {
     "requirements.txt",
     "ISCIENCE_REVISION_20260711/aef/recompute_full_aef_pfam_analysis_20260718_222823.py",
     "ISCIENCE_REVISION_20260711/aef/extract_exact_id_aef_embeddings_20260718_224936.py",
+    "ISCIENCE_REVISION_20260711/aef/archived_reported_extractor/README.md",
+    "ISCIENCE_REVISION_20260711/aef/archived_reported_extractor/extract_aef_embeddings_20251019.py",
     "ISCIENCE_REVISION_20260711/figure3_126/rebuild_figure3_recorded_metadata_20260718_223224.py",
     "ISCIENCE_REVISION_20260711/figure4_126/rebuild_figure4_126_20260715_232158.py",
+    "ISCIENCE_REVISION_20260711/figure5_gee_primary/build_figure5_primary_gee_sensitivity_20260719_210207.py",
     "ISCIENCE_REVISION_20260711/gee_validation/run_exact_id_gee_correlation_validation_20260712_072151.py",
+    "ISCIENCE_REVISION_20260711/gee_validation/run_aef_gee_site_alignment_20260719_204821.py",
+    "ISCIENCE_REVISION_20260711/gee_validation/run_gee_primary_sensitivity_20260719_203058.py",
+    "ISCIENCE_REVISION_20260711/gee_validation/run_gee_structured_null_refinement_20260719_205905.py",
     "ISCIENCE_REVISION_20260711/analysis_stats/run_robustness_20260711_085930.py",
+    "ISCIENCE_REVISION_20260711/analysis_stats/correct_aef_structured_null_conditional_tail_20260719_205621.py",
+    "ISCIENCE_REVISION_20260711/annotations/fetch_gee_robust_interpro_20260719_212508.py",
     "ISCIENCE_REVISION_20260711/pf00092_midas/test_pf00092_midas_20260715_232919.py",
     "ISCIENCE_REVISION_20260711/supplement/build_corrected_table_s3_20260718_224354.py",
+    "ISCIENCE_REVISION_20260711/supplement/build_reader_facing_tables_s2_s3_20260718_235342.py",
+    "ISCIENCE_REVISION_20260711/supplement/build_tables_s2_v3_s3_v6_20260719_210611.py",
+    "ISCIENCE_REVISION_20260711/supplement/build_tables_s2_v4_s3_v7_20260719_213408.py",
+    "ISCIENCE_REVISION_20260711/supplement/build_tables_s2_v5_s3_v8_20260719_214045.py",
+    "ISCIENCE_REVISION_20260711/supplement/build_table_s2_v6_sha256_expansion_20260719_215020.py",
+    "ISCIENCE_REVISION_20260711/supplement/build_supplemental_legends_v7_20260719_211018.py",
+    "ISCIENCE_REVISION_20260711/supplement/build_supplemental_legends_v8_20260719_214546.py",
+    "provenance/MANUAL_CODE_AUDIT_V1.0.2.md",
+    "provenance/SOURCE_PROVENANCE_V1.0.2.md",
 }
 FORBIDDEN_BASENAMES = {
     "generate_verified_correlation_tables_20251225_120000.py",
@@ -67,6 +84,31 @@ CREDENTIAL_PATTERNS = [
     re.compile(r"\bgithub_pat_[A-Za-z0-9_]{20,}\b"),
     re.compile(r"\bAIza[0-9A-Za-z_-]{30,}\b"),
     re.compile(r"\bAKIA[0-9A-Z]{16}\b"),
+]
+MAX_RELEASE_FILE_BYTES = 5 * 1024 * 1024
+DISALLOWED_RELEASE_SUFFIXES = {
+    ".csv",
+    ".csv.gz",
+    ".docx",
+    ".fa",
+    ".faa",
+    ".fasta",
+    ".fna",
+    ".hmm",
+    ".npy",
+    ".npz",
+    ".parquet",
+    ".pdf",
+    ".pkl",
+    ".png",
+    ".svg",
+    ".tif",
+    ".tiff",
+    ".xlsx",
+}
+PROHIBITED_SYNTHETIC_API_PATTERNS = [
+    re.compile(r"\btorch\.rand(?:n|int)?\s*\("),
+    re.compile(r"\bnp\.random\.(?:rand|randn|random|random_sample)\s*\("),
 ]
 
 
@@ -92,7 +134,11 @@ def classify(path: Path) -> str:
     if path.suffix == ".py":
         if "/integrity/" in relative or "/provenance/" in relative:
             return "integrity_or_provenance_code"
-        if "/supplement/" in relative or "/figures/" in relative:
+        if (
+            "/supplement/" in relative
+            or "/figures/" in relative
+            or "/figure5_gee_primary/" in relative
+        ):
             return "figure_or_table_support_code"
         return "analysis_code"
     if path.name in {"README.md", "DATA_INPUTS.md", "MANUAL_STEPS.md"}:
@@ -148,6 +194,16 @@ def main() -> None:
                 "sha256": sha256(path),
             }
         )
+        if path.stat().st_size > MAX_RELEASE_FILE_BYTES:
+            failures.append(
+                f"release file exceeds {MAX_RELEASE_FILE_BYTES} bytes: {relative_text}"
+            )
+        compound_suffix = "".join(path.suffixes).lower()
+        if (
+            path.suffix.lower() in DISALLOWED_RELEASE_SUFFIXES
+            or compound_suffix in DISALLOWED_RELEASE_SUFFIXES
+        ):
+            failures.append(f"scientific data/result file included: {relative_text}")
         is_text = path.suffix.lower() in TEXT_SUFFIXES or path.name in {
             "LICENSE",
             ".gitignore",
@@ -180,6 +236,16 @@ def main() -> None:
                 warnings.append(
                     f"random API present for manual review (resampling permitted): {relative_text}"
                 )
+            if path.resolve() != Path(__file__).resolve() and "np.linspace" in text:
+                warnings.append(
+                    f"np.linspace present for manual review (plot bins/ticks permitted): {relative_text}"
+                )
+            for pattern in PROHIBITED_SYNTHETIC_API_PATTERNS:
+                if pattern.search(text):
+                    failures.append(
+                        f"prohibited unscoped synthetic random API in {relative_text}"
+                    )
+                    break
 
     missing = sorted(REQUIRED_PATHS - observed)
     failures.extend(f"missing required release file: {path}" for path in missing)
@@ -217,6 +283,15 @@ def main() -> None:
             ),
             "python_syntax_valid": not any(
                 item.startswith("syntax error") for item in failures
+            ),
+            "no_large_or_scientific_result_files": not any(
+                item.startswith("release file exceeds")
+                or item.startswith("scientific data/result file included")
+                for item in failures
+            ),
+            "prohibited_synthetic_random_apis_absent": not any(
+                item.startswith("prohibited unscoped synthetic random API")
+                for item in failures
             ),
         },
         "warnings": sorted(set(warnings)),

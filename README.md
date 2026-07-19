@@ -1,67 +1,69 @@
 # Macroalgae genome–environment analysis code
 
-This repository contains the analysis and figure-support code for the manuscript *Earth-Observation and Hybrid Spatiotemporal Embeddings Reveal Genome–Environment Associations in Macroalgae*.
+This repository contains the scientific analysis, annotation-retrieval, figure, and supplemental-table code for the manuscript *Named Earth-Observation Variables Identify Temperature-Centered Protein-Family Covariation across Macroalgal Genomes*.
 
-All genome–environment analyses reported in the manuscript use the authenticated 126-genome cohort: 70 Rhodophyta, 43 Ochrophyta, and 13 Chlorophyta. The code does not substitute simulated, synthetic, or fabricated scientific results for experimental or observational data.
+Release `v1.0.2` reflects the final GEE-primary analysis hierarchy. The authenticated cohort contains 126 genomes: 70 Rhodophyta, 43 Ochrophyta, and 13 Chlorophyta. The primary exact-ID Google Earth Engine (GEE) screen tested 87,123 protein-family–environment pairs. Its selected family contained 84 globally Benjamini–Hochberg-supported pairs; 56 passed the refined structured null, and 49 pairs spanning 30 Pfams passed all seven required checks. All 13 discovery Bonferroni pairs passed all seven checks. AlphaEarth Foundations (AEF) analyses are secondary cross-representation analyses.
 
-## Repository scope
+The code does not substitute simulated, synthetic, fabricated, or hard-coded scientific results for observational or experimental data.
 
-The current revision workflows are organized as follows:
+## Primary GEE workflow
 
-- `ISCIENCE_REVISION_20260711/integrity/`: cohort reconciliation, raw HMMER/Pfam count reconstruction, HMM header audit, and UAE metadata audit.
-- `ISCIENCE_REVISION_20260711/aef/`: year-explicit exact-ID AEF extraction plus the corrected 126-genome, 10,707-Pfam by 64-axis screen, global multiplicity correction, within-phylum specifications, phylum-centered analysis, and Figure 5 generator.
-- `ISCIENCE_REVISION_20260711/gee_validation/`: exact-genome-ID Earth Engine extraction and the 87,123-test raw-count correlation workflow.
-- `ISCIENCE_REVISION_20260711/analysis_stats/`: the seven post hoc robustness checks, including site aggregation, alternate denominators, assembly-quality adjustment, completeness thresholds, topology-aware adjustment, structured permutations, and bootstrap intervals.
-- `ISCIENCE_REVISION_20260711/pf00092_midas/`: PF00092.35 reannotation and canonical MIDAS-position analysis using real peptide sequences.
-- `ISCIENCE_REVISION_20260711/figure3_126/`: the corrected 42,828-test recorded-metadata screen and Figure 3 generator for the exact 126-genome cohort.
-- `ISCIENCE_REVISION_20260711/figure4_126/`: the within-phylum Figure 4 analysis on the 126-genome cohort.
-- `ISCIENCE_REVISION_20260711/spatial/` and `ISCIENCE_REVISION_20260711/figures/`: sampling-map rendering and Figure 1 layout support.
-- `ISCIENCE_REVISION_20260711/supplement/`: builders for corrected Tables S1–S3 and Figure S3 support.
-- `triangulation/scripts/`: retained FastTree tree-building step for the rbcL phylogeny.
+Run the scientific stages in this order after placing authenticated inputs at the paths listed in [DATA_INPUTS.md](DATA_INPUTS.md):
+
+1. `ISCIENCE_REVISION_20260711/gee_validation/extract_exact_id_gee_validation_20260712_071838.py` extracts 13 named variables for the exact 126-genome cohort.
+2. `ISCIENCE_REVISION_20260711/gee_validation/run_exact_id_gee_correlation_validation_20260712_072151.py` performs the 87,123-test raw-count discovery screen.
+3. `ISCIENCE_REVISION_20260711/gee_validation/run_gee_primary_sensitivity_20260719_203058.py` carries all 84 discovery-supported pairs through the seven required specifications and additional sensitivities.
+4. `ISCIENCE_REVISION_20260711/gee_validation/run_gee_structured_null_refinement_20260719_205905.py` refines the structured null to 99,999 intact-site permutations and rebuilds the 84-pair candidate table.
+5. `ISCIENCE_REVISION_20260711/annotations/fetch_gee_robust_interpro_20260719_212508.py` retrieves official InterPro/Pfam annotations for the 30 Pfams represented by the 49 retained pairs.
+6. `ISCIENCE_REVISION_20260711/figure5_gee_primary/build_figure5_primary_gee_sensitivity_20260719_210207.py` builds the final primary Figure 5 from authenticated sensitivity and refined-null tables.
+
+The shared robustness implementation is `ISCIENCE_REVISION_20260711/analysis_stats/run_robustness_20260711_085930.py`. Random-number generation in the primary workflow is restricted to resampling or permutation of observed coordinate-site units with recorded seeds.
+
+## Secondary AEF workflows and extractor provenance
+
+Two AEF extractors are included because they serve different provenance roles:
+
+- `ISCIENCE_REVISION_20260711/aef/archived_reported_extractor/extract_aef_embeddings_20251019.py` is a byte-identical copy of the historical extractor that produced the archived embeddings used in the reported AEF analyses. It calls `ee.ImageCollection(...).mosaic()` on the unfiltered annual collection: it does not select a calendar year, and mosaic precedence follows collection order. It is retained to disclose the exact historical operation, not to assign a year to those embeddings.
+- `ISCIENCE_REVISION_20260711/aef/extract_exact_id_aef_embeddings_20260718_224936.py` is a later, explicit-year extractor for prospective re-extraction. It requires `--year`, validates the SHA-256-pinned 126-genome cohort, and is not the source of the archived reported embedding table.
+
+The remaining secondary workflow is:
+
+- `ISCIENCE_REVISION_20260711/aef/recompute_full_aef_pfam_analysis_20260718_222823.py`: complete 10,707-Pfam × 64-axis AEF screen and the correlation-profile landscape now presented as Figure S4.
+- `ISCIENCE_REVISION_20260711/gee_validation/run_aef_gee_site_alignment_20260719_204821.py`: descriptive same-site cross-representation alignment of all 64 AEF axes with all 13 named GEE variables after exact-ID joining and aggregation to 90 coordinate sites.
+- `ISCIENCE_REVISION_20260711/analysis_stats/correct_aef_structured_null_conditional_tail_20260719_205621.py`: corrected 99,999-permutation selected-family AEF structured null and seven-check candidate table.
+
+AEF axes remain unitless latent features with distributed, nonunique environmental relationships.
+
+## Final figures and supplements
+
+- Figure 5: `figure5_gee_primary/build_figure5_primary_gee_sensitivity_20260719_210207.py`.
+- Figure S3 and the Supplemental Information package: `supplement/build_supplemental_legends_v8_20260719_214546.py`, with `build_supplemental_legends_v7_20260719_211018.py` retained because V8 imports its audited document helpers.
+- Figure S4: generated by `aef/recompute_full_aef_pfam_analysis_20260718_222823.py` and copied byte-for-byte into the supplement by the V8 builder.
+- Tables S2 and S3: the retained builder chain is `build_reader_facing_tables_s2_s3_20260718_235342.py`, `build_tables_s2_v3_s3_v6_20260719_210611.py`, `build_tables_s2_v4_s3_v7_20260719_213408.py`, `build_tables_s2_v5_s3_v8_20260719_214045.py`, and `build_table_s2_v6_sha256_expansion_20260719_215020.py`.
+
+Earlier Figure 1, Figure 3, Figure 4, Table S1, PF00092 MIDAS, integrity, and rbcL tree-support workflows remain in their existing directories. [MANUAL_STEPS.md](MANUAL_STEPS.md) records computational and manual boundaries.
 
 ## Reproducibility boundaries
 
-Large sequence files, raw HMMER output, derived matrices, and submission workbooks are not duplicated in this code repository. Their expected locations, public accessions, and service requirements are listed in [DATA_INPUTS.md](DATA_INPUTS.md).
+Large sequence files, raw HMMER output, Earth Engine extracts, derived scientific result tables, figure files, and submission workbooks are not duplicated here. Their expected locations and public accessions are listed in [DATA_INPUTS.md](DATA_INPUTS.md). Scripts authenticate pinned historical inputs where the final workflow recorded hashes and stop when required files are missing or changed.
 
-Several final figures include documented iTOL annotation or manual assembly. The exact computational and manual boundaries are listed in [MANUAL_STEPS.md](MANUAL_STEPS.md). Figures 3–5 have current generators tied to the authenticated 126-genome inputs.
+Editorial DOCX/manuscript/response-letter assembly utilities are intentionally excluded: they do not generate scientific results and would create circular dependencies on private submission documents. No manuscript correspondence, author contact data, credentials, private Earth Engine assets, or large private inputs are included.
 
-The repository includes no manuscript correspondence, author contact data, credentials, private Earth Engine assets, or superseded workflows.
+## Environment and checks
 
-## Environment
-
-The principal revision analyses were run in more than one recorded software environment. See [SOFTWARE_ENVIRONMENTS.md](SOFTWARE_ENVIRONMENTS.md) before reproducing a workflow. `requirements.txt` is a convenience installation list, not a claim that every historical workflow used one identical environment.
+See [SOFTWARE_ENVIRONMENTS.md](SOFTWARE_ENVIRONMENTS.md) for recorded run environments. `requirements.txt` is a convenience installation list, not a claim that all historical workflows shared one environment.
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install -r requirements.txt
+python provenance/build_public_release_manifest_20260718_225156.py --run-id 20260719_XXXXXX
 ```
 
-Reproduction utilities used by selected workflows include FastTree 2.1.11, Poppler, `qpdf`, and `tectonic`. Google Earth Engine scripts require an authorized Earth Engine account and project. `SOFTWARE_CITATIONS.md` covers manuscript-named analytical tools and resources; `SOFTWARE_ENVIRONMENTS.md` records implementation dependencies and versions.
+Google Earth Engine workflows require an authorized account and project. Final document and figure-package builders additionally use LibreOffice, Poppler, `qpdf`, and Tectonic where noted.
 
-## Running analyses
+The timestamped files under `provenance/` record release-path hashes, required-file checks, Python syntax checks, private-path and credential scans, file-size checks, and a manual review inventory for permitted observed-data resampling. [Source provenance](provenance/SOURCE_PROVENANCE_V1.0.2.md) maps each newly added v1.0.2 script to its workspace-relative source path and source SHA-256 digest.
 
-Place the authenticated inputs at the paths shown in [DATA_INPUTS.md](DATA_INPUTS.md), then run the relevant script from the repository root unless its header states otherwise. Current revision scripts accept explicit input or output arguments where implemented and stop when required data are absent. Output-producing revision scripts use timestamped or versioned names.
+## Citation and license
 
-Examples:
-
-```bash
-python ISCIENCE_REVISION_20260711/gee_validation/run_exact_id_gee_correlation_validation_20260712_072151.py
-python ISCIENCE_REVISION_20260711/aef/extract_exact_id_aef_embeddings_20260718_224936.py --manifest ISCIENCE_REVISION_20260711/integrity/reconciled_analysis_manifest_20260711_110650.csv --year 2024 --validate-only
-python ISCIENCE_REVISION_20260711/aef/recompute_full_aef_pfam_analysis_20260718_222823.py --help
-python ISCIENCE_REVISION_20260711/figure3_126/rebuild_figure3_recorded_metadata_20260718_223224.py --help
-python ISCIENCE_REVISION_20260711/analysis_stats/run_robustness_20260711_085930.py --help
-python ISCIENCE_REVISION_20260711/figure4_126/rebuild_figure4_126_20260715_232158.py --help
-python ISCIENCE_REVISION_20260711/pf00092_midas/test_pf00092_midas_20260715_232919.py --help
-python ISCIENCE_REVISION_20260711/supplement/build_corrected_table_s3_20260718_224354.py --help
-```
-
-## Provenance and citation
-
-The timestamped inventory under `provenance/` records the SHA-256 digest of every released script and identifies whether it is a current analysis, an integrity utility, or figure/table support. Software and database references are listed in [SOFTWARE_CITATIONS.md](SOFTWARE_CITATIONS.md).
-
-Please cite this repository using `CITATION.cff` and cite the manuscript when its bibliographic record is available.
-
-## License
-
-Author-owned code is released under the MIT License. External data, databases, imagery, software, and manuscript assets retain their original licenses and terms.
+Please cite this repository using `CITATION.cff` and cite the manuscript when its bibliographic record is available. Author-owned code is released under the MIT License. External data, databases, imagery, software, fonts, and manuscript assets retain their original licenses and terms.

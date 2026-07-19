@@ -7,5 +7,7 @@
 - Scripts must fail on missing or invalid required inputs instead of returning plausible placeholder results.
 - Numerical outputs must retain input, parameter, software, and code provenance where implemented.
 - The authenticated analysis cohort contains 126 genomes; cohort joins are enforced by genome identifier.
+- Expected result counts embedded in figure/table builders are assertions checked against loaded authenticated result tables; they are not substitutes for analysis.
+- The historical unfiltered AEF extractor is retained verbatim and explicitly labeled archival. The later explicit-year extractor is a separate prospective workflow.
 
-The timestamped release audit under `provenance/` records automated checks for absolute private paths, credential-like strings, syntax errors, and prohibited synthetic-data patterns.
+The timestamped release audit under `provenance/` records automated checks for absolute private paths, credential-like strings, syntax errors, oversized/private-input file types, and prohibited synthetic-data patterns. Random APIs are inventoried for manual confirmation that they are limited to observed-data resampling or permutation.
