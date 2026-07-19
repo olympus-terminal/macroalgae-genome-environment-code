@@ -110,6 +110,9 @@ PROHIBITED_SYNTHETIC_API_PATTERNS = [
     re.compile(r"\btorch\.rand(?:n|int)?\s*\("),
     re.compile(r"\bnp\.random\.(?:rand|randn|random|random_sample)\s*\("),
 ]
+GENERATED_PROVENANCE_RE = re.compile(
+    r"^provenance/public_release_(?:audit|inventory)_\d{8}_\d{6}\.(?:json|tsv)$"
+)
 
 
 def parse_args() -> argparse.Namespace:
@@ -157,7 +160,11 @@ def iter_release_files(root: Path, output_names: set[str]):
         relative = path.relative_to(root)
         if ".git" in relative.parts or "__pycache__" in relative.parts:
             continue
-        if path.name.endswith((".pyc", ".pyo")) or path.name in output_names:
+        if (
+            path.name.endswith((".pyc", ".pyo"))
+            or path.name in output_names
+            or GENERATED_PROVENANCE_RE.fullmatch(relative.as_posix())
+        ):
             continue
         yield path, relative
 
